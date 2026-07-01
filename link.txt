@@ -1,0 +1,5 @@
+Tautan container image di GitHub Packages (GitHub Container Registry):
+
+Halaman package : https://github.com/robbyulawal11/a433-microservices/pkgs/container/item-app
+Referensi pull  : ghcr.io/robbyulawal11/item-app:v1
+Pull command    : docker pull ghcr.io/robbyulawal11/item-app:v1

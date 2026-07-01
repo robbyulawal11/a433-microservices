@@ -1,0 +1,8 @@
+# Dependency Node.js
+node_modules/
+
+# Dokumen brief proyek dari Dicoding (bukan bagian submission repo)
+submission1/
+
+# Log runtime lokal
+npm-debug.log

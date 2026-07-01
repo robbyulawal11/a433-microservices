@@ -1,0 +1,5 @@
+# Paksa akhir baris LF untuk berkas yang harus jalan di lingkungan Unix/container,
+# agar tidak rusak akibat konversi CRLF di Windows.
+*.sh        text eol=lf
+Dockerfile  text eol=lf
+bin/www     text eol=lf

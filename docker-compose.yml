@@ -1,0 +1,50 @@
+# =============================================================================
+# docker-compose.yml
+# Menjalankan arsitektur Item App: item-app (Express) + item-db (MongoDB)
+# pada satu bridge network yang dibuat otomatis oleh Docker Compose.
+# Memenuhi Kriteria 4 + Saran 1 (komentar) & Saran 2 (restart policy).
+# =============================================================================
+
+# Versi format berkas Compose (>= 2 sesuai kriteria). Pada Docker Compose v2
+# atribut ini opsional/obsolete, namun tetap disertakan agar memenuhi kriteria.
+version: "3.9"
+
+services:
+  # ---- item-app: aplikasi web Node.js/Express -------------------------------
+  item-app:
+    # Menggunakan image item-app yang sudah di-push ke GitHub Packages (GHCR).
+    image: ghcr.io/robbyulawal11/item-app:v1
+    # Port mapping: akses dari port 80 di host -> port 8080 di container.
+    ports:
+      - "80:8080"
+    # Pastikan item-app baru berjalan setelah item-db benar-benar SIAP (healthy),
+    # bukan sekadar setelah container-nya dibuat.
+    depends_on:
+      item-db:
+        condition: service_healthy
+    # Restart policy (Saran 2): container otomatis restart saat berhenti,
+    # kecuali dihentikan manual oleh pengguna.
+    restart: unless-stopped
+
+  # ---- item-db: database MongoDB --------------------------------------------
+  item-db:
+    # Menggunakan image resmi mongo versi 3 dari Docker Hub.
+    image: mongo:3
+    # Simpan data database pada named volume "app-db" agar tetap persisten
+    # walau container dibuat ulang. Target /data/db adalah lokasi data MongoDB.
+    volumes:
+      - app-db:/data/db
+    # Restart policy (Saran 2) untuk database.
+    restart: unless-stopped
+    # Healthcheck: cek kesiapan MongoDB dengan ping ke server.
+    # mongo:3 memakai shell klasik "mongo" (bukan "mongosh").
+    healthcheck:
+      test: ["CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+# Definisi named volume "app-db" (Kriteria 4).
+volumes:
+  app-db:

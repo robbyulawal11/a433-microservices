@@ -1,2 +1,22 @@
-# Ignore node_modules directory
+# Jangan salin dependency & artefak yang tidak perlu ke dalam image.
+# Membuat build lebih cepat dan ukuran image lebih kecil.
+node_modules
 src/node_modules
+
+# Metadata & riwayat Git
+.git
+.gitignore
+.gitattributes
+
+# Berkas Docker itu sendiri
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Dokumen brief proyek (bukan bagian aplikasi)
+submission1
+
+# Log & berkas hasil
+log.txt
+link.txt
+npm-debug.log

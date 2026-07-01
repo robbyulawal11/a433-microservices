@@ -1,0 +1,50 @@
+item-app-1  | 2026-07-01T06:06:01.462459216Z 
+item-db-1   | 2026-07-01T06:05:55.428279521Z 2026-07-01T06:05:55.427+0000 I CONTROL  [initandlisten] MongoDB starting : pid=1 port=27017 dbpath=/data/db 64-bit host=82d2de0d10b1
+item-db-1   | 2026-07-01T06:05:55.428312457Z 2026-07-01T06:05:55.428+0000 I CONTROL  [initandlisten] db version v3.6.23
+item-db-1   | 2026-07-01T06:05:55.428315482Z 2026-07-01T06:05:55.428+0000 I CONTROL  [initandlisten] git version: d352e6a4764659e0d0350ce77279de3c1f243e5c
+item-app-1  | 2026-07-01T06:06:01.462584375Z > docker-software-delivery@1.0.0 start /app
+item-app-1  | 2026-07-01T06:06:01.462588795Z > node ./bin/www
+item-db-1   | 2026-07-01T06:05:55.428317551Z 2026-07-01T06:05:55.428+0000 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.2g  1 Mar 2016
+item-db-1   | 2026-07-01T06:05:55.428319342Z 2026-07-01T06:05:55.428+0000 I CONTROL  [initandlisten] allocator: tcmalloc
+item-db-1   | 2026-07-01T06:05:55.428321053Z 2026-07-01T06:05:55.428+0000 I CONTROL  [initandlisten] modules: none
+item-db-1   | 2026-07-01T06:05:55.428322870Z 2026-07-01T06:05:55.428+0000 I CONTROL  [initandlisten] build environment:
+item-db-1   | 2026-07-01T06:05:55.428324652Z 2026-07-01T06:05:55.428+0000 I CONTROL  [initandlisten]     distmod: ubuntu1604
+item-db-1   | 2026-07-01T06:05:55.428326317Z 2026-07-01T06:05:55.428+0000 I CONTROL  [initandlisten]     distarch: x86_64
+item-db-1   | 2026-07-01T06:05:55.428328001Z 2026-07-01T06:05:55.428+0000 I CONTROL  [initandlisten]     target_arch: x86_64
+item-app-1  | 2026-07-01T06:06:01.462590543Z 
+item-app-1  | 2026-07-01T06:06:01.686902584Z NODE_ENV: production
+item-app-1  | 2026-07-01T06:06:01.725441922Z Connected to database
+item-app-1  | 2026-07-01T06:06:01.845264076Z [0mGET /api [32m200 [0m8.868 ms - 73[0m
+item-db-1   | 2026-07-01T06:05:55.428329673Z 2026-07-01T06:05:55.428+0000 I CONTROL  [initandlisten] options: { net: { bindIpAll: true } }
+item-db-1   | 2026-07-01T06:05:55.428886800Z 2026-07-01T06:05:55.428+0000 I -        [initandlisten] Detected data files in /data/db created by the 'wiredTiger' storage engine, so setting the active storage engine to 'wiredTiger'.
+item-db-1   | 2026-07-01T06:05:55.428910883Z 2026-07-01T06:05:55.428+0000 I STORAGE  [initandlisten] 
+item-db-1   | 2026-07-01T06:05:55.428917626Z 2026-07-01T06:05:55.428+0000 I STORAGE  [initandlisten] ** WARNING: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+item-db-1   | 2026-07-01T06:05:55.428934621Z 2026-07-01T06:05:55.428+0000 I STORAGE  [initandlisten] **          See http://dochub.mongodb.org/core/prodnotes-filesystem
+item-db-1   | 2026-07-01T06:05:55.428947263Z 2026-07-01T06:05:55.428+0000 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=3385M,cache_overflow=(file_max=0M),session_max=20000,eviction=(threads_min=4,threads_max=4),config_base=false,statistics=(fast),compatibility=(release="3.0",require_max="3.0"),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),statistics_log=(wait=0),verbose=(recovery_progress),
+item-db-1   | 2026-07-01T06:05:56.332887266Z 2026-07-01T06:05:56.332+0000 I STORAGE  [initandlisten] WiredTiger message [1782885956:332345][1:0x7fd0dbb5aa40], txn-recover: Main recovery loop: starting at 2/8576
+item-db-1   | 2026-07-01T06:05:56.419138653Z 2026-07-01T06:05:56.418+0000 I STORAGE  [initandlisten] WiredTiger message [1782885956:418759][1:0x7fd0dbb5aa40], txn-recover: Recovering log 2 through 3
+item-db-1   | 2026-07-01T06:05:56.468807876Z 2026-07-01T06:05:56.468+0000 I STORAGE  [initandlisten] WiredTiger message [1782885956:468575][1:0x7fd0dbb5aa40], txn-recover: Recovering log 3 through 3
+item-db-1   | 2026-07-01T06:05:56.508195350Z 2026-07-01T06:05:56.507+0000 I STORAGE  [initandlisten] WiredTiger message [1782885956:507830][1:0x7fd0dbb5aa40], txn-recover: Set global recovery timestamp: 0
+item-db-1   | 2026-07-01T06:05:56.538523153Z 2026-07-01T06:05:56.538+0000 I CONTROL  [initandlisten] 
+item-db-1   | 2026-07-01T06:05:56.538554163Z 2026-07-01T06:05:56.538+0000 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+item-db-1   | 2026-07-01T06:05:56.538573113Z 2026-07-01T06:05:56.538+0000 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+item-db-1   | 2026-07-01T06:05:56.538578023Z 2026-07-01T06:05:56.538+0000 I CONTROL  [initandlisten] 
+item-db-1   | 2026-07-01T06:05:56.538581405Z 2026-07-01T06:05:56.538+0000 I CONTROL  [initandlisten] 
+item-db-1   | 2026-07-01T06:05:56.538584685Z 2026-07-01T06:05:56.538+0000 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/enabled is 'always'.
+item-db-1   | 2026-07-01T06:05:56.538588073Z 2026-07-01T06:05:56.538+0000 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+item-db-1   | 2026-07-01T06:05:56.538591300Z 2026-07-01T06:05:56.538+0000 I CONTROL  [initandlisten] 
+item-db-1   | 2026-07-01T06:05:56.541129033Z 2026-07-01T06:05:56.540+0000 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/db/diagnostic.data'
+item-db-1   | 2026-07-01T06:05:56.541747001Z 2026-07-01T06:05:56.541+0000 I NETWORK  [initandlisten] listening via socket bound to 0.0.0.0
+item-db-1   | 2026-07-01T06:05:56.541769925Z 2026-07-01T06:05:56.541+0000 I NETWORK  [initandlisten] listening via socket bound to /tmp/mongodb-27017.sock
+item-db-1   | 2026-07-01T06:05:56.541774902Z 2026-07-01T06:05:56.541+0000 I NETWORK  [initandlisten] waiting for connections on port 27017
+item-db-1   | 2026-07-01T06:06:00.489356489Z 2026-07-01T06:06:00.488+0000 I NETWORK  [listener] connection accepted from 127.0.0.1:49356 #1 (1 connection now open)
+item-db-1   | 2026-07-01T06:06:00.489990508Z 2026-07-01T06:06:00.489+0000 I NETWORK  [conn1] received client metadata from 127.0.0.1:49356 conn1: { application: { name: "MongoDB Shell" }, driver: { name: "MongoDB Internal Client", version: "3.6.23" }, os: { type: "Linux", name: "Ubuntu", architecture: "x86_64", version: "16.04" } }
+item-db-1   | 2026-07-01T06:06:00.494811476Z 2026-07-01T06:06:00.494+0000 I NETWORK  [conn1] end connection 127.0.0.1:49356 (0 connections now open)
+item-db-1   | 2026-07-01T06:06:01.711665833Z 2026-07-01T06:06:01.711+0000 I NETWORK  [listener] connection accepted from 172.23.0.3:34694 #2 (1 connection now open)
+item-db-1   | 2026-07-01T06:06:01.722308833Z 2026-07-01T06:06:01.722+0000 I NETWORK  [conn2] received client metadata from 172.23.0.3:34694 conn2: { driver: { name: "nodejs", version: "2.2.36" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "5.15.167.4-microsoft-standard-WSL2" }, platform: "Node.js v14.21.3, LE, mongodb-core: 2.1.20" }
+item-db-1   | 2026-07-01T06:06:10.589371417Z 2026-07-01T06:06:10.588+0000 I NETWORK  [listener] connection accepted from 127.0.0.1:59182 #3 (2 connections now open)
+item-db-1   | 2026-07-01T06:06:10.589849314Z 2026-07-01T06:06:10.589+0000 I NETWORK  [conn3] received client metadata from 127.0.0.1:59182 conn3: { application: { name: "MongoDB Shell" }, driver: { name: "MongoDB Internal Client", version: "3.6.23" }, os: { type: "Linux", name: "Ubuntu", architecture: "x86_64", version: "16.04" } }
+item-db-1   | 2026-07-01T06:06:10.594835267Z 2026-07-01T06:06:10.594+0000 I NETWORK  [conn3] end connection 127.0.0.1:59182 (1 connection now open)
+item-db-1   | 2026-07-01T06:06:20.673587324Z 2026-07-01T06:06:20.673+0000 I NETWORK  [listener] connection accepted from 127.0.0.1:33412 #4 (2 connections now open)
+item-db-1   | 2026-07-01T06:06:20.674119142Z 2026-07-01T06:06:20.673+0000 I NETWORK  [conn4] received client metadata from 127.0.0.1:33412 conn4: { application: { name: "MongoDB Shell" }, driver: { name: "MongoDB Internal Client", version: "3.6.23" }, os: { type: "Linux", name: "Ubuntu", architecture: "x86_64", version: "16.04" } }
+item-db-1   | 2026-07-01T06:06:20.678361578Z 2026-07-01T06:06:20.677+0000 I NETWORK  [conn4] end connection 127.0.0.1:33412 (1 connection now open)
