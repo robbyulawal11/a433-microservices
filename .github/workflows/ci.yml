@@ -1,0 +1,52 @@
+# Workflow CI untuk frontend Karsa Jobs (branch karsajobs-ui).
+# Terdiri dari 2 job berurutan: lint-dockerfile -> build-app-karsajobs-ui.
+name: CI karsajobs-ui
+
+# Workflow dijalankan otomatis setiap ada push ke branch karsajobs-ui
+on:
+  push:
+    branches:
+      - karsajobs-ui
+
+# Izin untuk GITHUB_TOKEN bawaan:
+# contents: read  -> boleh membaca isi repository (checkout)
+# packages: write -> boleh push image ke GitHub Packages (ghcr.io)
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  # Job 1: instal hadolint lalu jalankan terhadap berkas Dockerfile
+  lint-dockerfile:
+    runs-on: ubuntu-latest                 # Job dijalankan di runner Ubuntu terbaru
+    steps:
+      # Mengambil (checkout) source code repository ke dalam runner
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      # Mengunduh binary hadolint dari GitHub releases lalu memberi izin eksekusi
+      - name: Install hadolint
+        run: |
+          wget -q -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+          chmod +x hadolint
+      # Menjalankan hadolint terhadap berkas Dockerfile milik frontend
+      - name: Run hadolint against Dockerfile
+        run: ./hadolint Dockerfile
+
+  # Job 2: build image frontend lalu push ke GitHub Packages (ghcr.io)
+  build-app-karsajobs-ui:
+    runs-on: ubuntu-latest                 # Job dijalankan di runner Ubuntu terbaru
+    needs: lint-dockerfile                 # Job ini baru jalan setelah lint-dockerfile sukses
+    steps:
+      # Mengambil (checkout) source code repository ke dalam runner
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      # Build Docker image frontend dari Dockerfile dengan tag ghcr.io
+      # (nilai VUE_APP_BACKEND pada berkas .env ikut ter-build ke dalam image)
+      - name: Build Docker image
+        run: docker build -t ghcr.io/robbyulawal11/karsajobs-ui:latest .
+      # Login ke ghcr.io memakai GITHUB_TOKEN bawaan GitHub Actions (tanpa PAT manual)
+      - name: Login to GitHub Container Registry
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      # Push (unggah) image frontend ke GitHub Packages
+      - name: Push image to GitHub Packages
+        run: docker push ghcr.io/robbyulawal11/karsajobs-ui:latest
