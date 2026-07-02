@@ -1,0 +1,68 @@
+# Workflow CI untuk backend Karsa Jobs (branch karsajobs).
+# Terdiri dari 3 job berurutan: lint-dockerfile -> test-app -> build-app-karsajobs.
+name: CI karsajobs
+
+# Workflow dijalankan otomatis setiap ada push ke branch karsajobs
+on:
+  push:
+    branches:
+      - karsajobs
+
+# Izin untuk GITHUB_TOKEN bawaan:
+# contents: read  -> boleh membaca isi repository (checkout)
+# packages: write -> boleh push image ke GitHub Packages (ghcr.io)
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  # Job 1: instal hadolint lalu jalankan terhadap berkas Dockerfile
+  lint-dockerfile:
+    runs-on: ubuntu-latest                 # Job dijalankan di runner Ubuntu terbaru
+    steps:
+      # Mengambil (checkout) source code repository ke dalam runner
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      # Mengunduh binary hadolint dari GitHub releases lalu memberi izin eksekusi
+      - name: Install hadolint
+        run: |
+          wget -q -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+          chmod +x hadolint
+      # Menjalankan hadolint terhadap berkas Dockerfile milik backend
+      - name: Run hadolint against Dockerfile
+        run: ./hadolint Dockerfile
+
+  # Job 2: menjalankan unit test backend (Go)
+  test-app:
+    runs-on: ubuntu-latest                 # Job dijalankan di runner Ubuntu terbaru
+    needs: lint-dockerfile                 # Job ini baru jalan setelah lint-dockerfile sukses
+    steps:
+      # Mengambil (checkout) source code repository ke dalam runner
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      # Memasang Go dengan versi yang sama seperti tertulis pada go.mod
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      # Menjalankan unit test sesuai perintah yang ditentukan pada ketentuan submission
+      - name: Run unit test
+        run: go test -v -short --count=1 $(go list ./...)
+
+  # Job 3: build image backend lalu push ke GitHub Packages (ghcr.io)
+  build-app-karsajobs:
+    runs-on: ubuntu-latest                 # Job dijalankan di runner Ubuntu terbaru
+    needs: test-app                        # Job ini baru jalan setelah test-app sukses
+    steps:
+      # Mengambil (checkout) source code repository ke dalam runner
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      # Build Docker image backend dari Dockerfile dengan tag ghcr.io
+      - name: Build Docker image
+        run: docker build -t ghcr.io/robbyulawal11/karsajobs:latest .
+      # Login ke ghcr.io memakai GITHUB_TOKEN bawaan GitHub Actions (tanpa PAT manual)
+      - name: Login to GitHub Container Registry
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      # Push (unggah) image backend ke GitHub Packages
+      - name: Push image to GitHub Packages
+        run: docker push ghcr.io/robbyulawal11/karsajobs:latest
