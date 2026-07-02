@@ -1,0 +1,32 @@
+# PersistentVolume (PV): menyediakan media penyimpanan di node
+# agar data MongoDB tetap ada walaupun pod di-restart/dihapus.
+apiVersion: v1                    # Versi API Kubernetes untuk object PersistentVolume
+kind: PersistentVolume            # Jenis object yang dibuat adalah PersistentVolume
+metadata:
+  name: mongo-pv                  # Nama PV yang akan diikat (bound) oleh PVC di bawah
+  labels:
+    app: mongo                    # Label penanda bahwa PV ini bagian dari komponen mongo
+spec:
+  storageClassName: manual        # Kelas storage "manual" (static provisioning), harus sama dengan PVC
+  capacity:
+    storage: 1Gi                  # Kapasitas penyimpanan yang disediakan sebesar 1 GiB
+  accessModes:
+    - ReadWriteOnce               # Volume hanya bisa di-mount read-write oleh satu node
+  hostPath:
+    path: /data/mongo             # Data disimpan pada direktori /data/mongo di node (VM minikube)
+---
+# PersistentVolumeClaim (PVC): "klaim" atas PV di atas,
+# dipakai oleh StatefulSet MongoDB untuk mount ke /data/db.
+apiVersion: v1                    # Versi API Kubernetes untuk object PersistentVolumeClaim
+kind: PersistentVolumeClaim       # Jenis object yang dibuat adalah PersistentVolumeClaim
+metadata:
+  name: mongo-pvc                 # Nama PVC, dirujuk oleh StatefulSet pada bagian volumes
+  labels:
+    app: mongo                    # Label penanda bahwa PVC ini bagian dari komponen mongo
+spec:
+  storageClassName: manual        # Harus sama dengan storageClassName milik PV agar bisa terikat
+  accessModes:
+    - ReadWriteOnce               # Mode akses harus cocok dengan yang disediakan PV
+  resources:
+    requests:
+      storage: 1Gi                # Jumlah storage yang diminta (sesuai kapasitas PV)

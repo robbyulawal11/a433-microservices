@@ -1,0 +1,23 @@
+# Deployment: menjalankan frontend Karsa Jobs (Vue.js)
+# dari image yang tersimpan di GitHub Packages (ghcr.io).
+apiVersion: apps/v1                                   # Versi API Kubernetes untuk object Deployment
+kind: Deployment                                      # Jenis object yang dibuat adalah Deployment
+metadata:
+  name: karsajobs-ui                                  # Nama Deployment frontend
+  labels:
+    app: karsajobs-ui                                 # Label penanda komponen frontend karsajobs-ui
+spec:
+  replicas: 1                                         # Jumlah pod frontend yang dijalankan
+  selector:
+    matchLabels:
+      app: karsajobs-ui                               # Deployment mengelola pod yang berlabel app: karsajobs-ui
+  template:                                           # Template (cetakan) pod yang akan dibuat
+    metadata:
+      labels:
+        app: karsajobs-ui                             # Label pod, harus cocok dengan selector di atas
+    spec:
+      containers:
+        - name: karsajobs-ui                          # Nama container di dalam pod
+          image: ghcr.io/robbyulawal11/karsajobs-ui:latest   # Image frontend dari GitHub Packages
+          ports:
+            - containerPort: 8000                     # Port yang dibuka container (port serve Vue.js)

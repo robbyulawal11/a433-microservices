@@ -1,0 +1,13 @@
+# ConfigMap: menyimpan berkas konfigurasi MongoDB (mongo.conf)
+# yang akan di-mount ke dalam container MongoDB pada path /config.
+apiVersion: v1               # Versi API Kubernetes untuk object ConfigMap
+kind: ConfigMap              # Jenis object yang dibuat adalah ConfigMap
+metadata:
+  name: mongo-configmap      # Nama ConfigMap, dirujuk oleh StatefulSet MongoDB
+  labels:
+    app: mongo               # Label penanda bahwa ConfigMap ini bagian dari komponen mongo
+data:
+  # Data diperlakukan sebagai sebuah file bernama mongo.conf (tanda | = isi multi-baris literal)
+  mongo.conf: |
+    storage:
+      dbPath: /data/db

@@ -1,0 +1,16 @@
+# Service: mengekspos frontend Karsa Jobs ke luar cluster
+# lewat NodePort agar bisa dibuka pengguna dari browser.
+apiVersion: v1               # Versi API Kubernetes untuk object Service
+kind: Service                # Jenis object yang dibuat adalah Service
+metadata:
+  name: karsajobs-ui         # Nama Service frontend
+  labels:
+    app: karsajobs-ui        # Label penanda komponen frontend karsajobs-ui
+spec:
+  type: NodePort             # NodePort = service dibuka pada port tertentu di setiap node
+  selector:
+    app: karsajobs-ui        # Meneruskan traffic ke pod yang memiliki label app: karsajobs-ui
+  ports:
+    - port: 8000             # Port Service di dalam cluster
+      targetPort: 8000       # Port container frontend yang dituju
+      nodePort: 31000        # Custom NodePort (rentang 30000-32767) untuk akses dari luar cluster

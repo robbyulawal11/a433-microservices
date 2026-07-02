@@ -1,0 +1,43 @@
+# Deployment: menjalankan backend API Karsa Jobs (Go)
+# dari image yang tersimpan di GitHub Packages (ghcr.io).
+apiVersion: apps/v1                                # Versi API Kubernetes untuk object Deployment
+kind: Deployment                                   # Jenis object yang dibuat adalah Deployment
+metadata:
+  name: karsajobs                                  # Nama Deployment backend
+  labels:
+    app: karsajobs                                 # Label penanda komponen backend karsajobs
+spec:
+  replicas: 1                                      # Jumlah pod backend yang dijalankan
+  selector:
+    matchLabels:
+      app: karsajobs                               # Deployment mengelola pod yang berlabel app: karsajobs
+  template:                                        # Template (cetakan) pod yang akan dibuat
+    metadata:
+      labels:
+        app: karsajobs                             # Label pod, harus cocok dengan selector di atas
+    spec:
+      containers:
+        - name: karsajobs                          # Nama container di dalam pod
+          image: ghcr.io/robbyulawal11/karsajobs:latest   # Image backend dari GitHub Packages
+          ports:
+            - containerPort: 8080                  # Port yang dibuka container (sesuai APP_PORT)
+          env:
+            # Port tempat aplikasi Go berjalan di dalam container
+            - name: APP_PORT
+              value: "8080"
+            # Host MongoDB, diisi nama Service MongoDB ("mongo") agar
+            # backend menemukan database lewat DNS internal cluster
+            - name: MONGO_HOST
+              value: mongo
+            # Username MongoDB diambil dari Secret mongo-secret key MONGO_ROOT_USERNAME
+            - name: MONGO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret               # Nama Secret sumber nilai
+                  key: MONGO_ROOT_USERNAME         # Key di dalam Secret yang diambil nilainya
+            # Password MongoDB diambil dari Secret mongo-secret key MONGO_ROOT_PASSWORD
+            - name: MONGO_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret               # Nama Secret sumber nilai
+                  key: MONGO_ROOT_PASSWORD         # Key di dalam Secret yang diambil nilainya

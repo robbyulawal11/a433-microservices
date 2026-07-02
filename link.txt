@@ -1,0 +1,9 @@
+Tautan container image pada GitHub Packages (GitHub Container Registry):
+
+1. Backend (karsajobs):
+   https://github.com/robbyulawal11/a433-microservices/pkgs/container/karsajobs
+   Pull image: docker pull ghcr.io/robbyulawal11/karsajobs:latest
+
+2. Frontend (karsajobs-ui):
+   https://github.com/robbyulawal11/a433-microservices/pkgs/container/karsajobs-ui
+   Pull image: docker pull ghcr.io/robbyulawal11/karsajobs-ui:latest

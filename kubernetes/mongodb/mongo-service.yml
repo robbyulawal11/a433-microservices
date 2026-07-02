@@ -1,0 +1,16 @@
+# Service: pintu akses MongoDB di dalam cluster.
+# Berjenis headless (clusterIP: None) karena dipakai oleh StatefulSet,
+# sehingga pod mongo bisa diakses langsung lewat DNS internal bernama "mongo".
+apiVersion: v1               # Versi API Kubernetes untuk object Service
+kind: Service                # Jenis object yang dibuat adalah Service
+metadata:
+  name: mongo                # Nama Service; menjadi hostname DNS internal (dipakai sebagai MONGO_HOST backend)
+  labels:
+    app: mongo               # Label penanda bahwa Service ini bagian dari komponen mongo
+spec:
+  clusterIP: None            # None = headless service, tidak diberi IP virtual (khas untuk StatefulSet)
+  selector:
+    app: mongo               # Meneruskan traffic ke pod yang memiliki label app: mongo
+  ports:
+    - port: 27017            # Port Service yang dibuka di dalam cluster
+      targetPort: 27017      # Port container MongoDB yang dituju (port default MongoDB)
