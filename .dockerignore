@@ -1,0 +1,12 @@
+# Mengabaikan node_modules milik host agar tidak tersalin ke image (dependency di-install ulang di dalam image)
+node_modules
+# Mengabaikan metadata git karena tidak dibutuhkan di dalam image
+.git
+# Mengabaikan Dockerfile itu sendiri karena tidak perlu berada di dalam image
+Dockerfile
+# Mengabaikan berkas .dockerignore ini karena tidak perlu berada di dalam image
+.dockerignore
+# Mengabaikan script build & push karena hanya digunakan di host, bukan di dalam image
+build_push_image_order_service.sh
+# Mengabaikan berkas dokumentasi karena tidak dibutuhkan saat aplikasi berjalan
+README.md
