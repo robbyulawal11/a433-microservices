@@ -1,1 +1,2 @@
+# Mengabaikan direktori node_modules agar dependency tidak ikut ter-push ke repository
 node_modules
