@@ -1,0 +1,35 @@
+# Versi API Istio yang digunakan untuk resource VirtualService
+apiVersion: networking.istio.io/v1beta1
+# Jenis resource yang dibuat, yakni VirtualService (aturan routing trafik)
+kind: VirtualService
+# Metadata berisi identitas resource
+metadata:
+  # Nama virtual service untuk aplikasi E-Commerce App
+  name: ecommerce-virtual-service
+  # Namespace tempat virtual service ini berada
+  namespace: ecommerce
+# Spesifikasi virtual service
+spec:
+  # Daftar host yang dilayani; tanda "*" berarti berlaku untuk semua hostname
+  hosts:
+    - "*"
+  # Menghubungkan virtual service ini dengan gateway ecommerce-gateway
+  gateways:
+    - ecommerce-gateway
+  # Daftar aturan routing untuk trafik HTTP
+  http:
+      # Aturan pencocokan request
+    - match:
+          # Request dicocokkan berdasarkan URI
+        - uri:
+            # URI harus sama persis dengan /order (sesuai ketentuan pada tips)
+            exact: /order
+      # Tujuan routing bila request cocok dengan aturan di atas
+      route:
+          # Destinasi trafik
+        - destination:
+            # Host tujuan adalah nama Kubernetes Service untuk order service (sesuai ketentuan pada tips)
+            host: order-service
+            # Port service tujuan
+            port:
+              number: 3000

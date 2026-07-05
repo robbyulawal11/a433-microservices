@@ -1,0 +1,9 @@
+Tautan container image di GitHub Packages (ghcr.io):
+
+Order Service:
+https://github.com/users/robbyulawal11/packages/container/package/order-service
+Pull command: docker pull ghcr.io/robbyulawal11/order-service:latest
+
+Shipping Service:
+https://github.com/users/robbyulawal11/packages/container/package/shipping-service
+Pull command: docker pull ghcr.io/robbyulawal11/shipping-service:latest

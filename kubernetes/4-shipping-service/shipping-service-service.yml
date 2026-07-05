@@ -1,0 +1,28 @@
+# Versi API Kubernetes yang digunakan untuk resource Service
+apiVersion: v1
+# Jenis resource yang dibuat, yakni Service
+kind: Service
+# Metadata berisi identitas resource
+metadata:
+  # Nama service untuk shipping service
+  name: shipping-service
+  # Namespace tempat service ini berada
+  namespace: ecommerce
+  # Label untuk menandai resource ini
+  labels:
+    app: shipping-service
+# Spesifikasi service
+spec:
+  # Tipe ClusterIP karena shipping service hanya diakses dari dalam cluster
+  type: ClusterIP
+  # Selector untuk memilih pod tujuan, yakni pod dengan label app=shipping-service
+  selector:
+    app: shipping-service
+  # Daftar port yang diekspos oleh service
+  ports:
+      # Nama port dengan prefiks "http" agar protokolnya dikenali oleh Istio
+    - name: http
+      # Port service yang dibuka untuk menerima trafik
+      port: 3001
+      # Port pada container shipping service yang menerima trafik
+      targetPort: 3001

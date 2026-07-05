@@ -1,0 +1,28 @@
+# Versi API Kubernetes yang digunakan untuk resource Service
+apiVersion: v1
+# Jenis resource yang dibuat, yakni Service
+kind: Service
+# Metadata berisi identitas resource
+metadata:
+  # Nama service; nama ini yang menjadi tujuan (destination.host) pada Istio Virtual Service
+  name: order-service
+  # Namespace tempat service ini berada
+  namespace: ecommerce
+  # Label untuk menandai resource ini
+  labels:
+    app: order-service
+# Spesifikasi service
+spec:
+  # Tipe ClusterIP karena akses dari luar akan melalui Istio Ingress Gateway
+  type: ClusterIP
+  # Selector untuk memilih pod tujuan, yakni pod dengan label app=order-service
+  selector:
+    app: order-service
+  # Daftar port yang diekspos oleh service
+  ports:
+      # Nama port dengan prefiks "http" agar protokolnya dikenali oleh Istio
+    - name: http
+      # Port service yang dibuka untuk menerima trafik
+      port: 3000
+      # Port pada container order service yang menerima trafik
+      targetPort: 3000

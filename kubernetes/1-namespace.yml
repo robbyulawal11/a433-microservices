@@ -1,0 +1,13 @@
+# Versi API Kubernetes yang digunakan untuk resource Namespace
+apiVersion: v1
+# Jenis resource yang dibuat, yakni Namespace
+kind: Namespace
+# Metadata berisi identitas resource
+metadata:
+  # Nama namespace tempat seluruh resource aplikasi E-Commerce App berada
+  name: ecommerce
+  # Label tambahan untuk namespace
+  labels:
+    # Label ini memerintahkan Istio untuk otomatis menyuntikkan (inject) sidecar proxy Envoy
+    # ke setiap pod yang dibuat di dalam namespace ini (implementasi service mesh)
+    istio-injection: enabled

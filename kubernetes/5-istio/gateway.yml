@@ -1,0 +1,28 @@
+# Versi API Istio yang digunakan untuk resource Gateway
+apiVersion: networking.istio.io/v1beta1
+# Jenis resource yang dibuat, yakni Gateway (pintu masuk trafik dari luar mesh)
+kind: Gateway
+# Metadata berisi identitas resource
+metadata:
+  # Nama gateway untuk aplikasi E-Commerce App
+  name: ecommerce-gateway
+  # Namespace tempat gateway ini berada
+  namespace: ecommerce
+# Spesifikasi gateway
+spec:
+  # Selector untuk memilih pod Istio Ingress Gateway bawaan Istio yang akan menjalankan konfigurasi ini
+  selector:
+    istio: ingressgateway
+  # Daftar server (listener) yang dibuka oleh gateway
+  servers:
+      # Konfigurasi port listener
+    - port:
+        # Nomor port yang dibuka untuk trafik masuk
+        number: 80
+        # Nama port listener
+        name: http
+        # Protokol yang dilayani, yakni HTTP
+        protocol: HTTP
+      # Daftar host yang dilayani; tanda "*" berarti menerima trafik untuk semua hostname
+      hosts:
+        - "*"

@@ -1,0 +1,82 @@
+# Versi API Kubernetes yang digunakan untuk resource StatefulSet
+apiVersion: apps/v1
+# Jenis resource yang dibuat, yakni StatefulSet (cocok untuk aplikasi stateful seperti RabbitMQ)
+kind: StatefulSet
+# Metadata berisi identitas resource
+metadata:
+  # Nama StatefulSet RabbitMQ
+  name: rabbitmq
+  # Namespace tempat StatefulSet ini berada
+  namespace: ecommerce
+  # Label untuk menandai resource ini
+  labels:
+    app: rabbitmq
+# Spesifikasi StatefulSet
+spec:
+  # Nama headless service yang mengatur identitas jaringan pod StatefulSet ini
+  serviceName: rabbitmq
+  # Jumlah replika pod RabbitMQ yang dijalankan
+  replicas: 1
+  # Selector untuk mencocokkan pod yang dikelola StatefulSet ini
+  selector:
+    # Pod yang dikelola adalah pod dengan label app=rabbitmq
+    matchLabels:
+      app: rabbitmq
+  # Template pod yang akan dibuat oleh StatefulSet
+  template:
+    # Metadata pod
+    metadata:
+      # Label pod agar cocok dengan selector di atas dan selector pada service
+      labels:
+        app: rabbitmq
+      # Anotasi tambahan untuk pod
+      annotations:
+        # Menonaktifkan injeksi sidecar Istio khusus untuk pod RabbitMQ
+        # karena RabbitMQ adalah infrastruktur pendukung, bukan bagian dari service mesh aplikasi
+        sidecar.istio.io/inject: "false"
+    # Spesifikasi container di dalam pod
+    spec:
+      containers:
+          # Nama container RabbitMQ
+        - name: rabbitmq
+          # Container image RabbitMQ dari Docker Hub sesuai ketentuan kriteria 3
+          image: rabbitmq:3.11-management
+          # Daftar port yang dibuka oleh container
+          ports:
+              # Port 5672 untuk komunikasi AMQP dari order service dan shipping service
+            - name: amqp
+              containerPort: 5672
+              # Port 15672 untuk web management UI RabbitMQ
+            - name: management
+              containerPort: 15672
+          # Readiness probe untuk memastikan RabbitMQ benar-benar siap menerima koneksi
+          readinessProbe:
+            # Mengecek apakah port AMQP 5672 sudah bisa menerima koneksi TCP
+            # (dipilih tcpSocket karena ringan; perintah rabbitmq-diagnostics bisa lebih lama dari timeout probe)
+            tcpSocket:
+              port: 5672
+            # Menunggu 10 detik sebelum probe pertama dijalankan
+            initialDelaySeconds: 10
+            # Probe dijalankan setiap 10 detik
+            periodSeconds: 10
+            # Batas waktu maksimal tiap probe adalah 5 detik
+            timeoutSeconds: 5
+          # Volume yang dipasang (mount) ke dalam container
+          volumeMounts:
+              # Memasang volume data ke direktori penyimpanan data RabbitMQ
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq
+  # Template PersistentVolumeClaim agar data RabbitMQ tetap tersimpan meski pod di-restart
+  volumeClaimTemplates:
+      # Metadata PVC
+    - metadata:
+        # Nama volume yang dirujuk oleh volumeMounts di atas
+        name: rabbitmq-data
+      # Spesifikasi PVC
+      spec:
+        # Mode akses ReadWriteOnce: volume hanya bisa dipasang oleh satu node
+        accessModes: ["ReadWriteOnce"]
+        # Permintaan kapasitas penyimpanan sebesar 1 gigabyte
+        resources:
+          requests:
+            storage: 1Gi

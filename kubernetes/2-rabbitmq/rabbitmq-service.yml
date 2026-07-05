@@ -1,0 +1,34 @@
+# Versi API Kubernetes yang digunakan untuk resource Service
+apiVersion: v1
+# Jenis resource yang dibuat, yakni Service
+kind: Service
+# Metadata berisi identitas resource
+metadata:
+  # Nama service; nama ini menjadi alamat DNS internal cluster (amqp://rabbitmq:5672)
+  name: rabbitmq
+  # Namespace tempat service ini berada
+  namespace: ecommerce
+  # Label untuk menandai bahwa service ini milik aplikasi rabbitmq
+  labels:
+    app: rabbitmq
+# Spesifikasi service
+spec:
+  # clusterIP None menjadikan service ini headless, sesuai kebutuhan StatefulSet
+  clusterIP: None
+  # Selector untuk memilih pod tujuan, yakni pod dengan label app=rabbitmq
+  selector:
+    app: rabbitmq
+  # Daftar port yang diekspos oleh service
+  ports:
+      # Nama port untuk protokol AMQP (dipakai order service dan shipping service)
+    - name: amqp
+      # Port service yang dibuka untuk protokol AMQP
+      port: 5672
+      # Port pada container tujuan yang menerima trafik AMQP
+      targetPort: 5672
+      # Nama port untuk web management UI RabbitMQ
+    - name: management
+      # Port service yang dibuka untuk management UI
+      port: 15672
+      # Port pada container tujuan yang menerima trafik management UI
+      targetPort: 15672
